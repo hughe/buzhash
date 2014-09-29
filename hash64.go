@@ -169,7 +169,7 @@ func (bh *BuzHash64) Reset() {
 }
 
 func (bh *BuzHash64) Size() int {
-	return 4
+	return 8
 }
 
 func (bh *BuzHash64) BlockSize() int {
