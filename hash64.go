@@ -11,7 +11,23 @@ import (
 
 // 256 random uint64's to hash a single byte
 //
-// Generated using http://play.golang.org/p/pi-FFvgM_Y
+// Generated using http://play.golang.org/p/3BjRXtVBWh:
+//
+// package main
+
+// import (
+// 	"fmt"
+// 	"math/rand"
+// )
+
+// func main() {
+// 	for i := 0; i < 256; i++ {
+// 		// Int63 only gives you 63 bits, shift in another bit to make 64.
+// 		fmt.Printf("0x%016x,\n", uint64(rand.Int63())|(uint64(rand.Int31n(2))<<63))
+// 	}
+
+// }
+
 var bytehash64 = [256]uint64{
 	0xcd65822107fcfd52, 0xd5104dc76695721d, 0x365a858149c6e2d1, 0x0866cb397916001e,
 	0x0c697f48392907a0, 0xc1f27cc6f3875d04, 0x9b6cffa2ba517936, 0x28b621587cb3ad0b,
