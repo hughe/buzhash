@@ -98,15 +98,15 @@ var bytehash64 = [256]uint64{
 type BuzHash64 struct {
 	state    uint64
 	buf      []byte
-	n        uint64
+	n        int
 	bshiftn  uint
 	bshiftm  uint
-	bufpos   uint64
+	bufpos   int
 	overflow bool
 }
 
 // NewBuzHash64 generates and initializes a new BuzHash64 object with block size n
-func NewBuzHash64(n uint64) *BuzHash64 {
+func NewBuzHash64(n int) *BuzHash64 {
 	rv := new(BuzHash64)
 	rv.n = n
 	rv.bshiftn = uint(n % 64)
