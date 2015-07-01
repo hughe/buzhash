@@ -143,10 +143,39 @@ func (bh *BuzHash64) HashByte(b byte) uint64 {
 
 // Write updates the hash with the bytes from slice p
 func (bh *BuzHash64) Write(p []byte) (int, error) {
+
+	// Was: BenchmarkWrite	200000000	         8.33 ns/op
+	// for _, b := range p {
+	// 	bh.HashByte(b)
+	// }
+
+	// return len(p), nil
+
+	//Is now: BenchmarkWrite	500000000	         3.81 ns/op
+
+	state := bh.state
+	bufpos := bh.bufpos
+	buf := bh.buf
+
 	for _, b := range p {
-		bh.HashByte(b)
+		if bufpos == bh.n {
+			bufpos = 0
+			bh.overflow = true
+		}
+
+		state = (state << 1) | (state >> 63)
+		if bh.overflow {
+			toshift := bytehash64[buf[bufpos]]
+			state ^= (toshift << bh.bshiftn) | (toshift >> bh.bshiftm)
+		}
+		buf[bufpos] = b
+
+		state ^= bytehash64[b]
+		bufpos++
 	}
 
+	bh.state = state
+	bh.bufpos = bufpos
 	return len(p), nil
 }
 

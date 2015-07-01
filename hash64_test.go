@@ -69,3 +69,30 @@ func TestSum64(t *testing.T) {
 		t.Errorf("Sum32 (%08x) and Sum (%08x) returned different sums!", sum32, sumBytesAsNum)
 	}
 }
+
+func TestWrite64(t *testing.T) {
+	h1 := NewBuzHash64(16)
+	h2 := NewBuzHash64(16)
+
+	data := []byte(loremipsum1)
+	for _, b := range data {
+		h1.HashByte(b)
+	}
+
+	h2.Write(data)
+
+	if h2.Sum64() != h1.Sum64() {
+		t.Errorf(" got %x want %x", h2.Sum64(), h1.Sum64())
+	}
+}
+
+func BenchmarkWrite(b *testing.B) {
+	h := NewBuzHash64(16)
+
+	data := make([]byte, b.N)
+
+	b.ResetTimer()
+
+	h.Write(data)
+
+}
